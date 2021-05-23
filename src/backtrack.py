@@ -42,12 +42,30 @@ def display2d(l):
 def find_solution(player_hand, discard_deck):
     global solutions
 
+    print(f'ph: {len(player_hand)} | dd: {len(discard_deck)}')
+
     # Break condition, if no cards left to place 
     if len(player_hand) == 0:
         return True
      
+    # get compatable cards
+    play_card = discard_deck[-1]
+    for card in player_hand:
+        moves = []
+        if card.is_compatable(play_card):
+            print(f'compatable: {card} | {play_card}')
+            moves.append(card)
+        else:
+            print(f'Not compatable: {card} | {play_card}')
+        print('#' * 20)
+
+    for i in moves:
+        print(i)
+
+    '''
     for card in player_hand:
         if card.is_compatable(discard_deck[-1]):
+            print(f'compatable: {card} | {discard_deck[-1]}')
             discard_deck.append(card)
 
             tmp = player_hand
@@ -60,13 +78,34 @@ def find_solution(player_hand, discard_deck):
 
             else:
                 solutions.append(list(discard_deck))
+                print("SOLUTION DIDNT WORK, BACKTRACKING")
+                if len(discard_deck) > 2:
+                    print(discard_deck[1])
+                print(f'ph: {len(player_hand)} | dd: {len(discard_deck)}')
+
                 player_hand.append(discard_deck.pop())
+                print(f'ph: {len(player_hand)} | dd: {len(discard_deck)}')
+
+        else:
+            print(f'not compatable: {card} | {discard_deck[-1]}')
+    '''
 
 
     return False, None
 
 
+'''
+Card to play off of: Color: yellow | Number: 9
+0: Color: red | Number: 5
+1: Color: yellow | Number: 5
+2: Color: red | Number: 1
+3: Color: green | Number: 1
+4: Color: yellow | Number: 6
 
+
+y9, y6, y5, r5, r1, g1 
+    def __init__(self, color=None, number=None, special=None):
+'''
 
 def main():
     deck = Deck() # Creating a Deck of cards
@@ -75,9 +114,17 @@ def main():
     discard_deck = []
 
     # Drawing n random cards into players hand
+    '''
     for i in range(5):
         player_deck.append(deck.draw_card())
+    '''
+    player_deck.append(Card('red', '5', None))
+    player_deck.append(Card('yellow', '5', None))
+    player_deck.append(Card('red', '1', None))
+    player_deck.append(Card('green', '1', None))
+    player_deck.append(Card('yellow', '6', None))
 
+    '''
     # Creating a discard card to play off of
     while True:
         card = deck.draw_card()
@@ -87,7 +134,12 @@ def main():
             random.shuffle(deck.cards)
         else:
             discard_deck.append(card)
+            solutions.append([card])
             break
+    '''
+    dcard = Card('yellow', '9', None)
+    #solutions.append(dcard)
+    discard_deck.append(dcard)
     
     # DEBUG Display
     print(f'Card to play off of: {discard_deck[0]}')
@@ -96,17 +148,19 @@ def main():
 
 
     is_sol, sol = find_solution(player_deck, discard_deck)
+    '''
     if is_sol == True:
-        print('able to dump all cards')
+        print('\n' + '#' * 20 + 'able to dump all cards')
         display(i)
 
     else:
-        print('no solution found')
+        print('\n' + '#' * 20 + 'no solution found')
         print('total solutions tried : ' + str(len(solutions)))
         display2d(solutions)
     
 
     return 0
+    '''
 
 
 

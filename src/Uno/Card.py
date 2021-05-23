@@ -38,16 +38,18 @@ class Card:
         '''checks if a card is compatable with another card,
            ie: if they have the same color or the same number'''
             # Note: add wild card functionality
+        print(f'{self} | {other_card}')
 
         if self.same_color(other_card) and self.color != None:
-            print(f'color: {self.color} | {other_card.color}')
             return True
+
         elif self.same_number(other_card) and self.number != None:
-            print(f'number: {self.number} | {other_card.number}')
             return True
 
         # wild cards are compatable with any card
-        elif other_card.special == 'wild' or other_card.special == '+4_wild':
+        elif (other_card.special == 'wild' or other_card.special == '+4_wild'
+                or self.special == 'wild' or self.special == '+4_wild'):
             return True
 
-        return False
+        else:
+            return False

@@ -5,41 +5,66 @@ from Uno.Deck import Deck
 import random
 
 
+solutions = []
+biggest_sol = 0
 
-best_solution = []
 
+
+def display(l):
+    for item in l:
+        print(item)
+
+def display2d(l):
+    max_cards = 0
+    max_idx = 0
+    for idx, sol in enumerate(l):
+        if len(sol) > max_cards:
+            max_cards = len(sol)
+            max_idx = idx 
+
+    if max_cards == 1:
+        print(l[max_idx])
+
+    for card in l[max_idx]:
+        print(f'({card}) ', end='')
+    print('\n')
+
+
+'''
+1.) Start with the first card 
+2.) If all cards are placed -> return True
+3.) Try all cards.
+    a.) if the card can be played, check if this card leads to solution
+    b.) if placing card there leads to solution -> return True 
+    c.) if placing card doesnt lead to solution, un play card and go back to (a)
+4.) if all cards have been tried and nothing worked return False 
+'''
 def find_solution(player_hand, discard_deck):
-    '''
-    1.) Start with the first card 
-    2.) If all cards are placed -> return True
-    3.) Try all cards.
-        a.) if the card can be played, check if this card leads to solution
-        b.) if placing card there leads to solution -> return True 
-        c.) if placing card doesnt lead to solution, un play card and go back to (a)
-    4.) if all cards have been tried and nothing worked return False 
-    '''
-    print(f'length of player_hand: {len(player_hand)}')
-    global best_solution
+    global solutions
 
+    # Break condition, if no cards left to place 
+    if len(player_hand) == 0:
+        return True
+     
     for card in player_hand:
-       if card.is_compatable(discard_deck[-1]):
-           discard_deck.append(card)
+        if card.is_compatable(discard_deck[-1]):
+            discard_deck.append(card)
 
-           tmp = player_hand
-           tmp.remove(card)
-           is_sol, sol = find_solution(tmp, discard_deck)
-           if is_sol == True:
-               return True, sol
+            tmp = player_hand
+            tmp.remove(card)
 
-           # Else backtrack
-           if len(discard_deck) >= len(best_solution):
-               print('overwriting best solution')
-               best_solution = discard_deck
-               print(best_solution)
+            # trying next step 
+            is_sol, deck = find_solution(tmp, discard_deck)
+            if is_sol == True: 
+                return True, deck
 
-           discard_deck.pop()
+            else:
+                solutions.append(list(discard_deck))
+                player_hand.append(discard_deck.pop())
 
-    return False, best_solution
+
+    return False, None
+
 
 
 
@@ -48,10 +73,9 @@ def main():
 
     player_deck = []
     discard_deck = []
-    best = []
 
     # Drawing n random cards into players hand
-    for i in range(10):
+    for i in range(5):
         player_deck.append(deck.draw_card())
 
     # Creating a discard card to play off of
@@ -70,20 +94,19 @@ def main():
     for idx, card in enumerate(player_deck):
         print(f'{idx}: {card}')
 
-        
+
     is_sol, sol = find_solution(player_deck, discard_deck)
-    if is_sol == False:
-        print('No solution to dump all uno cards')
-        print('biggest solution')
-        for i in best_solution:
-            print(i)
+    if is_sol == True:
+        print('able to dump all cards')
+        display(i)
+
     else:
-        print('it is possible')
-        for i in best_solution:
-            print(i)
+        print('no solution found')
+        print('total solutions tried : ' + str(len(solutions)))
+        display2d(solutions)
+    
 
-
-
+    return 0
 
 
 

@@ -1,6 +1,6 @@
 # Card deck implementation
 
-from Card import Card
+from Uno.Card import Card
 import random 
 
 '''

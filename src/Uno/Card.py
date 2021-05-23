@@ -39,9 +39,11 @@ class Card:
            ie: if they have the same color or the same number'''
             # Note: add wild card functionality
 
-        if self.same_color(other_card):
+        if self.same_color(other_card) and self.color != None:
+            print(f'color: {self.color} | {other_card.color}')
             return True
-        elif self.same_number(other_card):
+        elif self.same_number(other_card) and self.number != None:
+            print(f'number: {self.number} | {other_card.number}')
             return True
 
         # wild cards are compatable with any card

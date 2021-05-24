@@ -3,6 +3,7 @@ from Uno.Card import Card
 from Uno.Deck import Deck
 
 import random # shuffle deck if top card to play off of is a special card 
+import sys
 
 
 solutions = []
@@ -51,7 +52,6 @@ def find_solution(player_hand, discard_deck):
     playable_cards = []
     for card in player_hand:
         if card.is_compatable(play_card):
-            print(f'Compatable: {card} , {play_card}')
             playable_cards.append(card)
 
     for c in playable_cards:
@@ -71,13 +71,23 @@ def find_solution(player_hand, discard_deck):
 
 
 def main():
+    if len(sys.argv) < 2:
+        print('No command line arg was passed specifying the number random cards in hand, setting it to 10')
+        card_num = 10
+    else:
+        try:
+            card_num = int(sys.argv[1])
+        except: 
+            print('invalid argument, Need a number')
+            return -1
+
     deck = Deck() # Creating a Deck of cards
 
     player_deck = []
     discard_deck = []
 
     # Drawing n random cards into players hand
-    for i in range(5):
+    for i in range(card_num):
         player_deck.append(deck.draw_card())
 
     # Creating a discard card to play off of

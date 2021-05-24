@@ -1,5 +1,5 @@
-
 # Card Implementation for the uno cards
+
 
 class Card:
     def __init__(self, color=None, number=None, special=None):
@@ -38,7 +38,6 @@ class Card:
         '''checks if a card is compatable with another card,
            ie: if they have the same color or the same number'''
             # Note: add wild card functionality
-        print(f'{self} | {other_card}')
 
         if self.same_color(other_card) and self.color != None:
             return True
